@@ -1,0 +1,51 @@
+.App {
+    text-align: center;
+    margin-top: 100px;
+  }
+  
+  .board {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin: 20px auto;
+    max-width: 790px;
+    background-color: #8d8282;
+    border-radius: 20px;
+    padding: 20px;
+  }
+  
+  .cell {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .cell.empty:hover {
+    background-color: #ccc;
+  }
+  
+  .cell.player {
+    background-color: blue;
+    animation: dropPieceAnimation 0.6s ease-out; /* Animasyonu ekledik */
+  }
+  
+  .cell.ai {
+    background-color: rgb(66, 44, 44);
+    animation: dropPieceAnimation 0.6s ease-out; /* Animasyonu ekledik */
+  }
+  
+  @keyframes dropPieceAnimation {
+    0% {
+      transform: translateY(-400px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  

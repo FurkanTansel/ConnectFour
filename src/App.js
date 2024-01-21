@@ -1,25 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
 
-function App() {
+import React, { useState } from 'react';
+import './styles.css';
+import GameSetup from './GameSetup';
+import Board from './Board';
+
+const App = () => {
+  const [gameConfig, setGameConfig] = useState(null);
+  const [gameHistory, setGameHistory] = useState([]);
+
+  const handleGameSetupComplete = (config) => {
+    setGameConfig(config);
+  };
+
+  const handleGameEnd = (winner) => {
+    setGameHistory((prevHistory) => [...prevHistory, { config: gameConfig, winner }]);
+    setGameConfig(null);
+  };
+
+  const handleShowGameHistory = () => {
+    // GameSetup bileşenine geçmişi gösterme isteği gönder
+    setGameConfig({ showGameHistory: true });
+  };
+
+  const renderGameBoard = () => {
+    if (gameConfig && !gameConfig.showGameHistory) {
+      return <Board gameName={gameConfig.gameName} onGameEnd={handleGameEnd} />;
+    } else {
+      return (
+        <GameSetup
+          onSetupComplete={handleGameSetupComplete}
+          onShowGameHistory={handleShowGameHistory}
+        />
+      );
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {renderGameBoard()}
+      {gameConfig && gameConfig.showGameHistory && (
+        <div className="game-history">
+          <h2>Game History</h2>
+          <ul>
+            {gameHistory.map((game, index) => (
+              <li key={index}>{`${game.config.gameName} - Winner: ${game.winner}`}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default App;

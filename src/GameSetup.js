@@ -1,14 +1,29 @@
 // GameSetup.js
 
-import React, { useState } from 'react';
-import './GameSetup.css';
+import React, { useEffect, useState } from 'react';
+import './GameSetup.css'; 
 
-const GameSetup = ({ onSetupComplete, onShowGameHistory }) => {
+const GameSetup = ({ onSetupComplete }) => {
   const [gameName, setGameName] = useState('');
-  const [backgroundColor, setBackgroundColor] = useState('#8d8282');
+  const [backgroundColor, setBackgroundColor] = useState('');
+  const [playerColor, setPlayerColor] = useState('');
+
+  useEffect(() => {
+    console.log(gameName,backgroundColor,playerColor);
+
+    localStorage.setItem("gameName", gameName)
+    localStorage.setItem("backgroundColor",backgroundColor)
+    localStorage.setItem("playerColor",playerColor)
+    
+  },[gameName,backgroundColor,playerColor])
+
 
   const handleStartGame = () => {
-    onSetupComplete({ gameName, backgroundColor });
+    // Giriş ekranından alınan değerleri ana bileşene iletmek için callback fonksiyonunu kullanıyoruz
+    onSetupComplete({ gameName, backgroundColor, playerColor });
+
+    // Kullanıcı renklerini locale kaydet
+    localStorage.setItem('playerColor', playerColor);
   };
 
   return (
@@ -27,11 +42,18 @@ const GameSetup = ({ onSetupComplete, onShowGameHistory }) => {
         <input
           type="color"
           value={backgroundColor}
-          onChange={(e) => setBackgroundColor(e.target.value)}
+          onChange={(e) => setBackgroundColor(e.target.value) }
+        />
+      </label>
+      <label>
+        Player Color:
+        <input
+          type="color"
+          value={playerColor}
+          onChange={(e) => setPlayerColor(e.target.value)}
         />
       </label>
       <button onClick={handleStartGame}>Start Game</button>
-      
     </div>
   );
 };

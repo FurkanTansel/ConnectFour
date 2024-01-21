@@ -31,12 +31,10 @@
   }
   
   .cell.player {
-    background-color: blue;
     animation: dropPieceAnimation 0.6s ease-out; /* Animasyonu ekledik */
   }
   
   .cell.ai {
-    background-color: rgb(66, 44, 44);
     animation: dropPieceAnimation 0.6s ease-out; /* Animasyonu ekledik */
   }
   

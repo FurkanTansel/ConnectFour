@@ -76,6 +76,8 @@ const Board = ({ onGameEnd }) => {
   const [backgroundColor, setBackgroundColor] = useState(localStorage.getItem('backgroundColor') || 'black');
   const [gameName, setGameName] = useState(localStorage.getItem("gameName"));
   const [gamerName , setGamerName] = useState(localStorage.getItem("gamerName"))
+
+  
   
 
   

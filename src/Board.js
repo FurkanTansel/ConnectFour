@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
@@ -23,27 +24,46 @@ const GameHeader = ({ currentPlayer, gamerName, gameName }) => {
   );
 };
 
-const WinnerModal = ({ show, winner, onHide, gamerName }) => {
-  return (
-    <Modal show={show} onHide={onHide}>
-      <Modal.Header closeButton>
-        <Modal.Title>Game Over</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {winner === 'draw' ? (
-          <p>It's a draw!</p>
-        ) : (
-          <p>{winner === 'player' ? `${gamerName}` : 'AI'} wins!</p>
-        )}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="primary" onClick={onHide}>
-          New Game
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
-};
+const WinnerModal = ({ show, winner, onHide, gamerName, onRestart }) => {
+    const [isDraw, setIsDraw] = useState(false);
+
+    useEffect(() => {
+        if (winner === 'draw') {
+          setIsDraw(true);
+        } else {
+          setIsDraw(false);
+        }
+      }, [winner]);
+
+      const handleButtonClick = () => {
+        if (isDraw) {
+          onRestart();
+        } else {
+          onHide();
+        }
+      };
+    
+
+
+  
+    return (
+        <Modal show={show} onHide={onHide}>
+          <Modal.Header closeButton>
+            <Modal.Title>Game Over</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>{winner === 'draw' ? "No one wins. It's a draw!" : `${winner === 'player' ? `${gamerName}` : 'AI'} wins!`}</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={handleButtonClick}>
+              {isDraw ? 'Restart' : 'New Game'}
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      );
+    };
+  
+
 
 const Board = ({ onGameEnd }) => {
   const [cells, setCells] = useState(Array(7 * 6).fill('empty'));
@@ -64,73 +84,76 @@ const Board = ({ onGameEnd }) => {
         checkWinner();
     }, [cells]);
     const checkWinner = () => {
-        for (let row = 0; row < 6; row++) {
-            for (let col = 0; col < 7; col++) {
-                const cellIndex = row * 7 + col;
-                const cellColor = cells[cellIndex];
+  for (let row = 0; row < 6; row++) {
+    for (let col = 0; col < 7; col++) {
+      const cellIndex = row * 7 + col;
+      const cellColor = cells[cellIndex];
 
-                if (cellColor !== 'empty') {
-                    // Yatay kontrol
-                    if (
-                        col + 3 < 7 &&
-                        cells[cellIndex + 1] === cellColor &&
-                        cells[cellIndex + 2] === cellColor &&
-                        cells[cellIndex + 3] === cellColor
-                    ) {
-                        setWinner(cellColor);
-                        setShowWinnerModal(true);
-                        return;
-                    }
-
-                    // Dikey kontrol
-                    if (
-                        row + 3 < 6 &&
-                        cells[cellIndex + 7] === cellColor &&
-                        cells[cellIndex + 14] === cellColor &&
-                        cells[cellIndex + 21] === cellColor
-                    ) {
-                        setWinner(cellColor);
-                        setShowWinnerModal(true);
-                        return;
-                    }
-
-                    // Çapraz kontrol (sağ üstten sola alta)
-                    if (
-                        col + 3 < 7 &&
-                        row + 3 < 6 &&
-                        cells[cellIndex + 8] === cellColor &&
-                        cells[cellIndex + 16] === cellColor &&
-                        cells[cellIndex + 24] === cellColor
-                    ) {
-                        setWinner(cellColor);
-                        setShowWinnerModal(true);
-                        return;
-                    }
-
-                    // Çapraz kontrol (sol üstten sağ alta)
-                    if (
-                        col - 3 >= 0 &&
-                        row + 3 < 6 &&
-                        cells[cellIndex + 6] === cellColor &&
-                        cells[cellIndex + 12] === cellColor &&
-                        cells[cellIndex + 18] === cellColor
-                    ) {
-                        setWinner(cellColor);
-                        setShowWinnerModal(true);
-                        return;
-                    }
-                }
-            }
+      if (cellColor !== 'empty') {
+        // Yatay kontrol
+        if (
+          col + 3 < 7 &&
+          cells[cellIndex + 1] === cellColor &&
+          cells[cellIndex + 2] === cellColor &&
+          cells[cellIndex + 3] === cellColor
+        ) {
+          setWinner(cellColor);
+          setShowWinnerModal(true);
+          return;
         }
 
-        // Berabere durumu kontrolü
-        if (!cells.includes('empty')) {
-            setWinner('draw');
-            setShowWinnerModal(true);
+        // Dikey kontrol
+        if (
+          row + 3 < 6 &&
+          cells[cellIndex + 7] === cellColor &&
+          cells[cellIndex + 14] === cellColor &&
+          cells[cellIndex + 21] === cellColor
+        ) {
+          setWinner(cellColor);
+          setShowWinnerModal(true);
+          return;
         }
 
-        
-    };
+        // Çapraz kontrol (sağ üstten sola alta)
+        if (
+          col + 3 < 7 &&
+          row + 3 < 6 &&
+          cells[cellIndex + 8] === cellColor &&
+          cells[cellIndex + 16] === cellColor &&
+          cells[cellIndex + 24] === cellColor
+        ) {
+          setWinner(cellColor);
+          setShowWinnerModal(true);
+          return;
+        }
+
+        // Çapraz kontrol (sol üstten sağ alta)
+        if (
+          col - 3 >= 0 &&
+          row + 3 < 6 &&
+          cells[cellIndex + 6] === cellColor &&
+          cells[cellIndex + 12] === cellColor &&
+          cells[cellIndex + 18] === cellColor
+        ) {
+          setWinner(cellColor);
+          setShowWinnerModal(true);
+          return;
+        }
+      }
+    }
+  }
+
+  // Berabere durumu kontrolü
+  if (!cells.includes('empty')) {
+    setWinner('draw');
+    setShowWinnerModal(true);
+
+    // Oyunu sıfırla
+    setCells(Array(7 * 6).fill('empty'));
+    setCurrentPlayer('player');
+  }
+};
+
 
     
 
@@ -181,8 +204,19 @@ const Board = ({ onGameEnd }) => {
     
       return (
         <div className="App">
-          <WinnerModal show={showWinnerModal} winner={winner}  gamerName={gamerName} onHide={handleWinnerModalClose} />
-          <GameHeader currentPlayer={currentPlayer} gameName={gameName} gamerName={gamerName} userColor={userColor} aiColor={aiColor} />
+<WinnerModal
+        show={showWinnerModal}
+        winner={winner}
+        gamerName={gamerName}
+        onHide={handleWinnerModalClose}
+        onRestart={() => {
+          // Restart butonuna tıklandığında yapılacak işlemler
+          setCells(Array(7 * 6).fill('empty'));
+          setCurrentPlayer('player');
+          setWinner(null);
+          setShowWinnerModal(false);
+        }}
+      />          <GameHeader currentPlayer={currentPlayer} gameName={gameName} gamerName={gamerName} userColor={userColor} aiColor={aiColor} />
           <div style={{ backgroundColor: backgroundColor }} className="board">
             {renderCells()}
           </div>

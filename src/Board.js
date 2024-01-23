@@ -4,70 +4,58 @@ import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
-
-
-
-
 const GameHeader = ({ currentPlayer, gamerName, gameName }) => {
   return (
     <div>
-        
-        <div className="">
-            <h1>{gameName}</h1>
-        </div>
-        <div className="game-header">
-            <h3>{currentPlayer === 'player' ? ` ${gamerName}` : 'AI'}</h3>
-        </div>
-
+      <div className="">
+        <h1>{gameName}</h1>
+      </div>
+      <div className="game-header">
+        <h3>{currentPlayer === 'player' ? ` ${gamerName}` : 'AI'}</h3>
+      </div>
     </div>
-
   );
 };
 
 const WinnerModal = ({ show, winner, onHide, gamerName, onRestart }) => {
-    const [isDraw, setIsDraw] = useState(false);
+  const [isDraw, setIsDraw] = useState(false);
 
-    useEffect(() => {
-        if (winner === 'draw') {
-          setIsDraw(true);
-        } else {
-          setIsDraw(false);
-        }
-      }, [winner]);
+  useEffect(() => {
+    if (winner === 'draw') {
+      setIsDraw(true);
+    } else {
+      setIsDraw(false);
+    }
+  }, [winner]);
 
-      const handleButtonClick = () => {
-        if (isDraw) {
-          onRestart();
-        } else {
-          onHide();
-        }
-      };
-    
+  const handleButtonClick = () => {
+    if (isDraw) {
+      onRestart();
+    } else {
+      onHide();
+    }
+  };
 
-
-  
-    return (
-        <Modal show={show} onHide={onHide}>
-          <Modal.Header closeButton>
-            <Modal.Title>Game Over</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>{winner === 'draw' ? "No one wins. It's a draw!" : `${winner === 'player' ? `${gamerName}` : 'AI'} wins!`}</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary" onClick={handleButtonClick}>
-              {isDraw ? 'Restart' : 'New Game'}
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      );
-    };
-  
-
+  return (
+    <Modal show={show} onHide={onHide}>
+      <Modal.Header closeButton>
+        <Modal.Title>Game Over</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <p>{winner === 'draw' ? "No one wins. It's a draw!" : `${winner === 'player' ? `${gamerName}` : 'AI'} wins!`}</p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" onClick={handleButtonClick}>
+          {isDraw ? 'Restart' : 'New Game'}
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
 const Board = ({ onGameEnd }) => {
   const [cells, setCells] = useState(Array(7 * 6).fill('empty'));
-  const [currentPlayer, setCurrentPlayer] = useState('player',);
+  const [currentPlayer, setCurrentPlayer] = useState('player');
   const [winner, setWinner] = useState(null);
   const [showWinnerModal, setShowWinnerModal] = useState(false);
   const [userColor, setUserColor] = useState(localStorage.getItem('playerColor') || 'blue');
@@ -84,7 +72,11 @@ const Board = ({ onGameEnd }) => {
  
     useEffect(() => {
         checkWinner();
-    }, [cells]);
+    // Eğer sıra AI'daysa, AI tarafından hamle yap
+    if (currentPlayer === 'ai' && winner !== 'draw') {
+        makeAiMove();
+      }
+    }, [cells, currentPlayer, winner]);
     const checkWinner = () => {
   for (let row = 0; row < 6; row++) {
     for (let col = 0; col < 7; col++) {
@@ -159,24 +151,39 @@ const Board = ({ onGameEnd }) => {
 
     
 
-    const handleCellClick = (index) => {
-        if (winner || cells[index] !== 'empty') {
-            return;
-        }
+const handleCellClick = (index) => {
+    if (winner || cells[index] !== 'empty' || currentPlayer === 'ai') {
+      return;
+    }
 
-        const newCells = [...cells];
+    const newCells = [...cells];
 
-        for (let i = 5; i >= 0; i--) {
-            const cellIndex = i * 7 + index;
-            if (newCells[cellIndex] === 'empty') {
-                newCells[cellIndex] = currentPlayer;
-                break;
-            }
-        }
+    for (let i = 5; i >= 0; i--) {
+      const cellIndex = i * 7 + index;
+      if (newCells[cellIndex] === 'empty') {
+        newCells[cellIndex] = currentPlayer;
+        break;
+      }
+    }
 
-        setCells(newCells);
-        setCurrentPlayer((prevPlayer) => (prevPlayer === 'player' ? 'ai' : 'player'));
-    };
+    setCells(newCells);
+    setCurrentPlayer('ai'); // Sırayı AI'ya geçir
+  };
+
+  const makeAiMove = () => {
+    // Yapay zeka tarafından bir hamle yapılacak algoritmayı buraya ekleyin
+    // Örneğin: rastgele bir boş hücre seçebilirsiniz
+    const emptyCells = cells.map((cell, index) => (cell === 'empty' ? index : null)).filter((index) => index !== null);
+    const randomIndex = Math.floor(Math.random() * emptyCells.length);
+    const aiMoveIndex = emptyCells[randomIndex];
+
+    const newCells = [...cells];
+    newCells[aiMoveIndex] = 'ai';
+
+    setCells(newCells);
+    setCurrentPlayer('player'); // Sırayı kullanıcıya geçir
+  };
+
 
     const renderCells = () => {
         return cells.map((cell, index) => (
@@ -195,36 +202,33 @@ const Board = ({ onGameEnd }) => {
     const handleWinnerModalClose = () => {
         setShowWinnerModal(false);
         onGameEnd(winner);
-       
       };
     
       const handleGameNameSubmit = (submittedGameName) => {
         setGameName(submittedGameName);
       };
-
-      
     
       return (
         <div className="App">
-<WinnerModal
-        show={showWinnerModal}
-        winner={winner}
-        gamerName={gamerName}
-        onHide={handleWinnerModalClose}
-        onRestart={() => {
-          // Restart butonuna tıklandığında yapılacak işlemler
-          setCells(Array(7 * 6).fill('empty'));
-          setCurrentPlayer('player');
-          setWinner(null);
-          setShowWinnerModal(false);
-        }}
-      />          <GameHeader currentPlayer={currentPlayer} gameName={gameName} gamerName={gamerName} userColor={userColor} aiColor={aiColor} />
+          <WinnerModal
+            show={showWinnerModal}
+            winner={winner}
+            gamerName={gamerName}
+            onHide={handleWinnerModalClose}
+            onRestart={() => {
+              // Restart butonuna tıklandığında yapılacak işlemler
+              setCells(Array(7 * 6).fill('empty'));
+              setCurrentPlayer('player');
+              setWinner(null);
+              setShowWinnerModal(false);
+            }}
+          />
+          <GameHeader currentPlayer={currentPlayer} gameName={gameName} gamerName={gamerName} userColor={userColor} aiColor={aiColor} />
           <div style={{ backgroundColor: backgroundColor }} className="board">
             {renderCells()}
           </div>
-       
         </div>
       );
     };
-
-export default Board;
+    
+    export default Board;

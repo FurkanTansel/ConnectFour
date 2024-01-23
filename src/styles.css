@@ -1,14 +1,16 @@
 .App {
     text-align: center;
-    margin-top: 100px;
+    margin-top: 0px;
   }
   
   .board {
+    margin-bottom: 25px;
+    transform: scale(0.55);
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 10px;
     margin: 20px auto;
-    max-width: 790px;
+    max-width: 795px;
     background-color: #8d8282;
     border-radius: 20px;
     padding: 20px;

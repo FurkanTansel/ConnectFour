@@ -1,19 +1,39 @@
 .App {
     text-align: center;
-    margin-top: 0px;
+    margin-top: 5px;
+    
   }
   
+
+  .game-header {
+    text-align: center;
+    padding: 20px;
+    background-color: #4caf50; /* Arka plan rengi */
+    color: white; /* Yazı rengi */
+    border-radius: 0px; /* Köşe yarıçapı */
+    margin-bottom: -150px;
+    margin-top: 150px;
+  }
+  
+  .game-header h1 {
+    margin: 0;
+  }
+
+  
+
+
   .board {
-    margin-bottom: 25px;
-    transform: scale(0.55);
+     transform: scale(0.55);
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 10px;
-    margin: 20px auto;
+    margin: 0px auto;
     max-width: 795px;
     background-color: #8d8282;
-    border-radius: 20px;
+    border-radius: 0px;
     padding: 20px;
+    margin-bottom: 30px;
+    margin-top: 0px;
   }
   
   .cell {

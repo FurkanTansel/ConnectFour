@@ -1,33 +1,22 @@
-// GameSetup.js
-
 import React, { useState, useEffect } from 'react';
 import './GameSetup.css';
-import { Card, Modal, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';  // useNavigate eklenmiştir
+import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const GameSetup = ({ onSetupComplete, onShowGameHistory }) => {
-  const [showModal, setShowModal] = useState(true);
-  const [gamerName, setGamerName] = useState('');
+  const [gamerName, setGamerName] = useState(localStorage.getItem("gamerName") ?? "");
   const [gameName, setGameName] = useState('');
   const [backgroundColor, setBackgroundColor] = useState('');
   const [playerColor, setPlayerColor] = useState('');
 
-  const navigate = useNavigate();  // useNavigate hook'u eklenmiştir
+  const navigate = useNavigate();
 
-  const handleCloseModal = () => setShowModal(false);
-
-  const handleOpenModal = () => setShowModal(true);
-
-  useEffect(() => {
-    // Sayfa yüklendiğinde otomatik olarak modalı aç
-    handleOpenModal();
-  }, []); // useEffect sadece bir kere çalışsın diye boş bir dependency array eklenmiştir.
+  
 
   const handleStartGame = () => {
-    // Gamer Name kontrolü ekleniyor
-    if (!gameName) {
-      // Hata durumunda modalı aç
-      handleOpenModal();
+    // Gamer Name ve Game Name kontrolü ekleniyor
+    if (!gamerName || !gameName) {
+      // Hata durumunda işlem yapabilirsiniz
       return;
     }
 
@@ -39,81 +28,65 @@ const GameSetup = ({ onSetupComplete, onShowGameHistory }) => {
     localStorage.setItem('backgroundColor', backgroundColor);
     localStorage.setItem('gameName', gameName);
     localStorage.setItem('gamerName', gamerName);
-    
 
-    // Modalı kapat, ancak diğer sayfaya atlamaz
-    handleCloseModal();
+    // game page'e yönlendirme yapılıyor
+    navigate('/game');
   };
 
   const handleShowHistory = () => {
     // Game History sayfasına yönlendirme yapılıyor
-    onShowGameHistory();  // Eğer state veya başka bir bilgiye ihtiyaç varsa buradan geçebilirsiniz
+    onShowGameHistory();
     navigate('/history');
   };
 
   return (
     <div className="game-setup">
-      <Card>
-        <Card.Body>
-          <Card.Title>Gamer Setup</Card.Title>
-          <Card.Text>
-            <label>
-              Game Name
-              <input
-                type="text"
-                value={gamerName}
-                onChange={(e) => setGamerName(e.target.value)}
-              />
-            </label>
-            <label>
-              Background Color:
-              <input
-                type="color"
-                value={backgroundColor}
-                onChange={(e) => setBackgroundColor(e.target.value)}
-              />
-            </label>
-            <label>
-              Player Color:
-              <input
-                type="color"
-                value={playerColor}
-                onChange={(e) => setPlayerColor(e.target.value)}
-              />
-            </label>
-          </Card.Text>
-          <Button variant="primary" onClick={handleStartGame}>
-            Start Game
-          </Button>
-          <Button variant="secondary" onClick={handleShowHistory}>
-            Game History
-          </Button>
-        </Card.Body>
-      </Card>
+      <label>
+        Usur Name:
+        <input
+          type="text"
+          value={gamerName}
+          onChange={(e) => setGamerName(e.target.value)}
+        />
+      </label>
+      <label>
+        Game Name:
+        <input
+          type="text"
+          value={gameName}
+          onChange={(e) => setGameName(e.target.value)}
+        />
+      </label>
+      <label>
+        Background Color:
+        <input
+          type="color"
+          value={backgroundColor}
+          onChange={(e) => setBackgroundColor(e.target.value)}
+        />
+      </label>
+      <label>
+        Player Color:
+        <input
+          type="color"
+          value={playerColor}
+          onChange={(e) => setPlayerColor(e.target.value)}
+        />
+      </label>
+      <Button
+  variant="primary"
+  onClick={handleStartGame}
+  disabled={!gamerName || !gameName || gamerName.trim() === '' || gameName.trim() === ''}
+>
+  Start Game
+</Button>
 
-      {/* Modal */}
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Game Name Setup</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <label>User Name </label>
-          <input
-            id="game-name-input"
-            className="swal2-input"
-            value={gameName}
-            onChange={(e) => setGameName(e.target.value)}
-          />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleCloseModal}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <Button 
+      variant="secondary" onClick={handleShowHistory}
+      disabled={!gamerName || !gameName || gamerName.trim() === '' || gameName.trim() === ''}
+      >
+        Game History
+      </Button>
     </div>
   );
 };

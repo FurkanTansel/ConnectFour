@@ -4,50 +4,61 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
 
-const GameHeader = ({ currentPlayer, gameName }) => {
-    return (
-      <div className="game-header">
-        <h1>{currentPlayer === 'player' ? `Player: ${gameName}` : 'AI'}</h1>
-      </div>
-    );
-  };
 
-const WinnerModal = ({ show, winner, onHide }) => {
-    
-    return (
+
+
+const GameHeader = ({ currentPlayer, gamerName, gameName }) => {
+  return (
+    <div>
         
+        <div className="">
+            <h1>{gameName}</h1>
+        </div>
+        <div className="game-header">
+            <h3>{currentPlayer === 'player' ? ` ${gamerName}` : 'AI'}</h3>
+        </div>
 
-        <Modal show={show} onHide={onHide}>
-            <Modal.Header closeButton>
-                <Modal.Title>Game Over</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                {winner === 'draw' ? (
-                    <p>It's a draw!</p>
-                ) : (
-                    <p>{winner === 'player' ? "Player:" : 'AI'} wins!</p>
-                )}
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="primary" onClick={onHide}>
-                    New Game
-                </Button>
-            </Modal.Footer>
-        </Modal>
-    );
+    </div>
+
+  );
 };
 
-const Board = ({ gameName, onGameEnd }) => {
-    const [cells, setCells] = useState(Array(7 * 6).fill('empty'));
-    const [currentPlayer, setCurrentPlayer] = useState('player');
-    const [winner, setWinner] = useState(null);
-    const [showWinnerModal, setShowWinnerModal] = useState(false);
+const WinnerModal = ({ show, winner, onHide, gamerName }) => {
+  return (
+    <Modal show={show} onHide={onHide}>
+      <Modal.Header closeButton>
+        <Modal.Title>Game Over</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {winner === 'draw' ? (
+          <p>It's a draw!</p>
+        ) : (
+          <p>{winner === 'player' ? `${gamerName}` : 'AI'} wins!</p>
+        )}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" onClick={onHide}>
+          New Game
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
-    // Kullanıcının seçtiği renk
-    const [userColor, setUserColor] = useState(localStorage.getItem('playerColor') || 'blue');
-    const [aiColor, setAiColor] = useState('green');
-    const [defaultCellColor, setDefaultCellColor] = useState('white'); // Varsayılan hücre rengi
-    const [backgroundColor, setBackgroundColor] = useState(localStorage.getItem("backgroundColor")|| "black")
+const Board = ({ onGameEnd }) => {
+  const [cells, setCells] = useState(Array(7 * 6).fill('empty'));
+  const [currentPlayer, setCurrentPlayer] = useState('player',);
+  const [winner, setWinner] = useState(null);
+  const [showWinnerModal, setShowWinnerModal] = useState(false);
+  const [userColor, setUserColor] = useState(localStorage.getItem('playerColor') || 'blue');
+  const [aiColor, setAiColor] = useState('green');
+  const [defaultCellColor, setDefaultCellColor] = useState('white');
+  const [backgroundColor, setBackgroundColor] = useState(localStorage.getItem('backgroundColor') || 'black');
+  const [gameName, setGameName] = useState(localStorage.getItem("gameName"));
+  const [gamerName , setGamerName] = useState(localStorage.getItem("gamerName"))
+  
+
+  
  
     useEffect(() => {
         checkWinner();
@@ -117,7 +128,11 @@ const Board = ({ gameName, onGameEnd }) => {
             setWinner('draw');
             setShowWinnerModal(true);
         }
+
+        
     };
+
+    
 
     const handleCellClick = (index) => {
         if (winner || cells[index] !== 'empty') {
@@ -152,18 +167,28 @@ const Board = ({ gameName, onGameEnd }) => {
         ));
     };
 
-    const handleModalClose = () => {
+    const handleWinnerModalClose = () => {
         setShowWinnerModal(false);
         onGameEnd(winner);
-    };
+       
+      };
+    
+      const handleGameNameSubmit = (submittedGameName) => {
+        setGameName(submittedGameName);
+      };
 
-    return (
+      
+    
+      return (
         <div className="App">
-            <GameHeader currentPlayer={currentPlayer} gameName={gameName} userColor={userColor} aiColor={aiColor} />
-            <div style={{backgroundColor:backgroundColor}} className="board">{renderCells()}</div>
-            <WinnerModal show={showWinnerModal} winner={winner} onHide={handleModalClose} />
+          <WinnerModal show={showWinnerModal} winner={winner}  gamerName={gamerName} onHide={handleWinnerModalClose} />
+          <GameHeader currentPlayer={currentPlayer} gameName={gameName} gamerName={gamerName} userColor={userColor} aiColor={aiColor} />
+          <div style={{ backgroundColor: backgroundColor }} className="board">
+            {renderCells()}
+          </div>
+       
         </div>
-    );
-};
+      );
+    };
 
 export default Board;

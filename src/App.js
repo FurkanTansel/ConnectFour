@@ -1,8 +1,11 @@
+// App.js
+
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import './styles.css';
 import GameSetup from './GameSetup';
 import Board from './Board';
+import GameList from './GameList'; // Yeni eklenen import
 
 const App = () => {
   const [gameConfig, setGameConfig] = useState(null);
@@ -18,7 +21,6 @@ const App = () => {
   };
 
   const handleShowGameHistory = () => {
-    // GameSetup bileşenine geçmişi gösterme isteği gönder
     setGameConfig({ showGameHistory: true });
   };
 
@@ -41,23 +43,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Navigate to="/game" />} />
           <Route path="/game" element={renderGameBoard()} />
-          <Route
-            path="/history"
-            element={
-              <>
-                {gameConfig && gameConfig.showGameHistory && (
-                  <div className="game-history">
-                    <h2>Game History</h2>
-                    <ul>
-                      {gameHistory.map((game, index) => (
-                        <li key={index}>{`${game.config.gameName} - Winner: ${game.winner}`}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </>
-            }
-          />
+          <Route path="/history" element={<GameList gameHistory={gameHistory} />} />
         </Routes>
       </div>
     </Router>

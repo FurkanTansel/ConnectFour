@@ -58,6 +58,9 @@ Open http://localhost:3000 in your browser.
 ## Gameplay
 ### Setup Screen:
  Enter your username, game name, background color, and player color. Click "Start Game" to begin playing.
+
+![GameSetup](https://github.com/FurkanTansel/ConnectFour/assets/128932969/40cb2773-a66a-463b-b46d-4c855cf4da80)
+ 
 ### Game Board:
   Play the Connect Four game by clicking on the cells to drop your colored discs. The game alternates turns between the player and the AI.
 ### Game Over: 

@@ -171,33 +171,45 @@ const handleCellClick = (index) => {
   };
 
   const makeAiMove = () => {
-    // Yapay zeka tarafından bir hamle yapılacak algoritmayı buraya ekleyin
-    // Örneğin: rastgele bir boş hücre seçebilirsiniz
-    const emptyCells = cells.map((cell, index) => (cell === 'empty' ? index : null)).filter((index) => index !== null);
-    const randomIndex = Math.floor(Math.random() * emptyCells.length);
-    const aiMoveIndex = emptyCells[randomIndex];
-
-    const newCells = [...cells];
-    newCells[aiMoveIndex] = 'ai';
-
-    setCells(newCells);
-    setCurrentPlayer('player'); // Sırayı kullanıcıya geçir
+    // Choose a random column to play in
+    let columnIndex = Math.floor(Math.random() * 7);
+    let placed = false;
+  
+    // Find the lowest empty spot in that column
+    for (let row = 5; row >= 0; row--) {
+      if (cells[row * 7 + columnIndex] === 'empty' && !placed) {
+        const newCells = [...cells];
+        newCells[row * 7 + columnIndex] = 'ai';
+        setCells(newCells);
+        setCurrentPlayer('player'); // Switch turn back to the player
+        placed = true;
+        break;
+      }
+    }
+  
+    // If the column is full, try another one
+    if (!placed) {
+      makeAiMove();
+    }
   };
+  
+  
 
 
-    const renderCells = () => {
-        return cells.map((cell, index) => (
-            <div
-                key={index}
-                className={`cell ${cell} ${cell === 'empty' ? 'falling' : ''} ${cell === 'player' ? 'dropping' : ''}`}
-                style={{
-                    backgroundColor:
-                        cell === 'player' ? userColor : cell === 'ai' ? aiColor : defaultCellColor,
-                }}
-                onClick={() => handleCellClick(index)}
-            ></div>
-        ));
-    };
+  const renderCells = () => {
+    return cells.map((cell, index) => (
+      <div
+        key={index}
+        className={`cell ${cell} ${cell === 'empty' ? 'falling' : ''} ${cell === 'player' ? 'dropping-player' : ''} ${cell === 'ai' ? 'dropping-ai' : ''}`}
+        style={{
+          backgroundColor:
+            cell === 'player' ? userColor : cell === 'ai' ? aiColor : defaultCellColor,
+        }}
+        onClick={() => handleCellClick(index)}
+      ></div>
+    ));
+  };
+  
 
     const handleWinnerModalClose = () => {
         setShowWinnerModal(false);

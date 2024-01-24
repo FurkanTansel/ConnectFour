@@ -8,7 +8,7 @@ const GameList = ({ gameHistory }) => {
               {game.config && game.config.gamerName ? (
                 <>
                   <strong>Game Name:</strong> <strong>{game.config.gameName}</strong><br />
-                  {`${game.config.gamerName} - ${game.winner === 'ai' ? 'AI' : 'Player'}`} <br />
+                  {`${game.config.gamerName} - ${game.winner === 'ai' ? 'AI' : 'AI'}`} <br />
                   Winner: {game.winner === 'ai' ? 'AI' : game.config.gamerName}
                 </>
               ) : (

@@ -52,12 +52,13 @@
     background-color: #ccc;
   }
   
-  .cell.player {
-    animation: dropPieceAnimation 0.6s ease-out; /* Animasyonu ekledik */
+  /* Adjust animation for player and AI */
+  .dropping-player {
+    animation: dropPieceAnimationPlayer 0.6s ease-out;
   }
   
-  .cell.ai {
-    animation: dropPieceAnimation 0.6s ease-out; /* Animasyonu ekledik */
+  .cell.ai.falling {
+    animation: dropPieceAnimation 0.6s ease-out;
   }
   
   @keyframes dropPieceAnimation {
@@ -68,4 +69,16 @@
       transform: translateY(0);
     }
   }
+  
+  
+  @keyframes dropPieceAnimationAI {
+    0% {
+      transform: translateY(-400px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  
   

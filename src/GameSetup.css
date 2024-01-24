@@ -1,7 +1,16 @@
+
+body {
+  background-image: url('../public/GameCreate.jpg'); /* Resmin yolunu buraya ekleyin */
+  background-size: cover; /* Resmin ekran boyutuna uyumlu olmasını sağlar */
+  background-repeat: no-repeat; /* Resmin tekrar etmemesini sağlar */
+  background-position: center; /* Resmi ortalamak için */
+  color: white; /* Metin rengini beyaz olarak ayarlar, arka plan resminin üzerinde görünmesini sağlar */
+}
+
 .game-setup {
     text-align: center;
     padding: 20px;
-    background-color: #f1f1f1;
+    background-image: #f1f1f1;
     border-radius: 10px;
     margin: 50px auto;
     max-width: 300px;
@@ -14,7 +23,7 @@
   label {
     display: block;
     margin-bottom: 10px;
-    color: #555;
+    color: #ffffff;
   }
   
   input {
@@ -23,6 +32,7 @@
     margin-top: 5px;
     margin-bottom: 15px;
     box-sizing: border-box;
+    background-color:#BFBFBF ;
   }
   
   button {

@@ -18,40 +18,46 @@ const GameHeader = ({ currentPlayer, gamerName, gameName }) => {
 };
 
 const WinnerModal = ({ show, winner, onHide, gamerName, onRestart }) => {
-  const [isDraw, setIsDraw] = useState(false);
-
-  useEffect(() => {
-    if (winner === 'draw') {
-      setIsDraw(true);
-    } else {
-      setIsDraw(false);
-    }
-  }, [winner]);
-
-  const handleButtonClick = () => {
-    if (isDraw) {
-      onRestart();
-    } else {
-      onHide();
-    }
+    const [isDraw, setIsDraw] = useState(false);
+  
+    useEffect(() => {
+      if (winner === 'draw') {
+        setIsDraw(true);
+      } else {
+        setIsDraw(false);
+      }
+    }, [winner]);
+  
+    const handleButtonClick = () => {
+        if (isDraw) {
+          onRestart();
+        } else {
+          onHide();
+        }
+      };
+      
+      
+      
+  
+    return (
+        <Modal show={show} onHide={onHide}>
+        <Modal.Header closeButton style={{ color: 'black' }}>
+          <Modal.Title>Game Over</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <p style={{ color: 'black' }}>
+  {winner === 'draw' ? "No one wins. It's a draw!" : `${winner === 'player' ? `${gamerName}` : 'AI'} wins!`}
+</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleButtonClick}>
+            {isDraw ? 'Restart' : 'New Game'}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      
+    );
   };
-
-  return (
-    <Modal show={show} onHide={onHide}>
-      <Modal.Header closeButton>
-        <Modal.Title>Game Over</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p>{winner === 'draw' ? "No one wins. It's a draw!" : `${winner === 'player' ? `${gamerName}` : 'AI'} wins!`}</p>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="primary" onClick={handleButtonClick}>
-          {isDraw ? 'Restart' : 'New Game'}
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
-};
 
 const Board = ({ onGameEnd }) => {
   const [cells, setCells] = useState(Array(7 * 6).fill('empty'));

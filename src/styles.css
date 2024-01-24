@@ -7,8 +7,8 @@
 
   .game-header {
     text-align: center;
-    padding: 20px;
-    background-color: #4caf50; /* Arka plan rengi */
+    
+   
     color: white; /* Yazı rengi */
     border-radius: 0px; /* Köşe yarıçapı */
     margin-bottom: -150px;
@@ -17,7 +17,20 @@
   
   .game-header h1 {
     margin: 0;
+
   }
+
+  .white-text {
+    color: rgb(209, 0, 0) !important;
+  }
+
+  /* styles.css veya istediğiniz CSS dosyanız */
+.custom-swal-content {
+  color: black; /* Yazı rengini istediğiniz renge ayarlayın */
+}
+
+  
+  
 
   
 
@@ -57,11 +70,11 @@
     animation: dropPieceAnimationPlayer 0.6s ease-out;
   }
   
-  .cell.ai.falling {
-    animation: dropPieceAnimation 0.6s ease-out;
+  .dropping-ai {
+    animation: dropPieceAnimationAI 0.6s ease-out;
   }
   
-  @keyframes dropPieceAnimation {
+  @keyframes dropPieceAnimationPlayer {
     0% {
       transform: translateY(-400px);
     }
@@ -69,7 +82,6 @@
       transform: translateY(0);
     }
   }
-  
   
   @keyframes dropPieceAnimationAI {
     0% {

@@ -79,3 +79,13 @@ Open http://localhost:3000 in your browser.
 
   ![GameList](https://github.com/FurkanTansel/ConnectFour/assets/128932969/545fb2eb-c3a9-44c3-8586-01b81a73c19a)
 
+
+  ## Contribution and Development
+ Developers who want to contribute to the project can do so by forking the GitHub repository or by reporting issues, thus contributing to the project's development. Any feedback and suggestions will help further improve the project. The project is an open-source project developed by the community. We look forward to your participation!
+
+https://chat.openai.com/share/1203c0f0-cd2e-47f5-9fc2-39963b6942ce
+
+https://chat.openai.com/share/5112d402-04de-49b5-9f07-8725fb6a0db2
+
+https://chat.openai.com/share/1dbff71d-15a7-4192-88b9-c3cc54440591
+

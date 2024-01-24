@@ -14,7 +14,6 @@ This is a React application implementing the classic Connect Four game. Players 
 - Features
 - Gameplay
 - Game History
-- License
 
 ## Installation
 

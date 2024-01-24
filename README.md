@@ -70,6 +70,9 @@ Open http://localhost:3000 in your browser.
 ### Game Over: 
   When the game is over (either a player wins or it's a draw), a modal will appear showing the winner or indicating a draw. Click "New Game" or "Restart" to play again.
 
+  ![NewGame](https://github.com/FurkanTansel/ConnectFour/assets/128932969/7259ac05-b8b1-4491-81dc-c0b1bd001564)
+
+
   ## Game History
 - View a list of past games in the "Game History" section.
 - Each entry includes the game name, players' names, and the winner of the game.

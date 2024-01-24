@@ -63,6 +63,10 @@ Open http://localhost:3000 in your browser.
  
 ### Game Board:
   Play the Connect Four game by clicking on the cells to drop your colored discs. The game alternates turns between the player and the AI.
+
+![Board](https://github.com/FurkanTansel/ConnectFour/assets/128932969/0bc49dff-eefd-4484-9512-48c7b5d5ca5c)
+
+  
 ### Game Over: 
   When the game is over (either a player wins or it's a draw), a modal will appear showing the winner or indicating a draw. Click "New Game" or "Restart" to play again.
 

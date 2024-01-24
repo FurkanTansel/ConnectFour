@@ -76,3 +76,6 @@ Open http://localhost:3000 in your browser.
   ## Game History
 - View a list of past games in the "Game History" section.
 - Each entry includes the game name, players' names, and the winner of the game.
+
+  ![GameList](https://github.com/FurkanTansel/ConnectFour/assets/128932969/545fb2eb-c3a9-44c3-8586-01b81a73c19a)
+
